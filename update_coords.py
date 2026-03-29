@@ -137,8 +137,18 @@ def process_spot(filepath: Path, cfg: dict, dry_run: bool) -> dict:
         entry["error"] = "location フィールドが不完全"
         return entry
 
+    # 検索クエリを組み立てる（name だけ → name + city のフォールバック）
+    city = data.get("area", {}).get("city", "")
+    queries = [name]
+    if city:
+        queries.append(f"{name} {city}")
+
+    candidates = []
     try:
-        candidates = search_place(name, cfg)
+        for query in queries:
+            candidates = search_place(query, cfg)
+            if candidates:
+                break
     except Exception as e:
         logger.error("[%s] API エラー: %s", slug, e)
         entry["status"] = "ERROR"
