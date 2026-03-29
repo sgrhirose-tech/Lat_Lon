@@ -1,0 +1,8 @@
+{
+  "api_key": "YOUR_GOOGLE_PLACES_API_KEY",
+  "threshold_km": 1.0,
+  "search_language": "ja",
+  "search_region": "jp",
+  "request_delay_sec": 0.5,
+  "max_candidates": 3
+}
