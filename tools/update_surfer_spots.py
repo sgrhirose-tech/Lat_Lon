@@ -65,6 +65,12 @@ def main():
         lon = spot["location"]["longitude"]
         current = spot.get("physical_features", {}).get("surfer_spot", False)
 
+        # 砂浜以外はスキップ（漁港・磯など非砂浜スポットの誤判定を防ぐ）
+        primary_type = spot.get("classification", {}).get("primary_type", "unknown")
+        if primary_type != "sand_beach":
+            print(f"  スキップ（{primary_type}）: {spot.get('name', path.stem)}")
+            continue
+
         # 既に true で --force なしならスキップ
         if current and not args.force:
             print(f"  スキップ（既に true）: {spot.get('name', path.stem)}")

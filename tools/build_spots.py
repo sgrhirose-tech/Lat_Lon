@@ -604,8 +604,12 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
                 }
 
     # ── ⑥-b サーフスポット判定 (OSM sport=surfing) ─────────────
-    if skip_google:
+    # 砂浜スポットに限定（漁港・磯など非砂浜での誤判定を防ぐ）
+    _cls_type = classification.get("primary_type", "unknown") if classification else "unknown"
+    if skip_google or _cls_type != "sand_beach":
         surfer_spot = False
+        if not skip_google and _cls_type != "sand_beach":
+            print(f"  サーフスポット判定... スキップ（{_cls_type}）")
     else:
         print("  サーフスポット判定 (OSM)...", end=" ", flush=True)
         try:
