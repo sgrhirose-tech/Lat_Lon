@@ -26,6 +26,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 from pythonista_spot_tools import fetch_physical_data
+from classify_by_name import match_name as _classify_by_keyword
 
 REPO_ROOT = Path(__file__).parent.parent
 
@@ -253,9 +254,24 @@ def process_file(
         if not cls:
             print("失敗")
             return False
+        # unknown の場合はキーワード補完を試みる
+        if cls["primary_type"] == "unknown":
+            kw_type, kw_conf, kw_kws = _classify_by_keyword(spot.get("name", ""))
+            if kw_type:
+                cls = {
+                    "primary_type":    kw_type,
+                    "confidence":      kw_conf,
+                    "secondary_flags": [],
+                    "source":          "name_keyword",
+                    "osm_evidence":    [f"keyword:{k}" for k in kw_kws],
+                }
+                print(f"→ unknown → キーワード補完: {kw_type} {kw_kws}")
+            else:
+                print(f"→ {cls['primary_type']} (confidence={cls['confidence']})")
+        else:
+            print(f"→ {cls['primary_type']} (confidence={cls['confidence']})")
         spot["classification"] = cls
         src_path.write_text(json.dumps(spot, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"→ {cls['primary_type']} (confidence={cls['confidence']})")
         time.sleep(_sleep_sec)
         return True
 
@@ -272,7 +288,21 @@ def process_file(
     print("    施設種別推定 (Overpass)...", end=" ", flush=True)
     cls = classify_spot(lat, lon, verbose=verbose)
     if cls:
-        print(f"→ {cls['primary_type']} (confidence={cls['confidence']})")
+        if cls["primary_type"] == "unknown":
+            kw_type, kw_conf, kw_kws = _classify_by_keyword(spot.get("name", ""))
+            if kw_type:
+                cls = {
+                    "primary_type":    kw_type,
+                    "confidence":      kw_conf,
+                    "secondary_flags": [],
+                    "source":          "name_keyword",
+                    "osm_evidence":    [f"keyword:{k}" for k in kw_kws],
+                }
+                print(f"→ unknown → キーワード補完: {kw_type} {kw_kws}")
+            else:
+                print(f"→ {cls['primary_type']} (confidence={cls['confidence']})")
+        else:
+            print(f"→ {cls['primary_type']} (confidence={cls['confidence']})")
     else:
         print("失敗（分類スキップ）")
     time.sleep(_sleep_sec)  # Overpass レート制限（動的）
