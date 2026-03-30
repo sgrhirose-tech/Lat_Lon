@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# TSV 入力データ（個人作業ファイル。.gitkeep のみ追跡）
+tsv/*.tsv
+
+# 実行結果ログ
+results/*.json
+
+# macOS
+.DS_Store
+
+# エディタ
+.vscode/
+.idea/
