@@ -5,7 +5,7 @@
 
 spot_editor.py で座標と海方向を確認・修正した後に実行する。
 底質・等深線（海しる）と施設種別（OSM Overpass）をまとめて取得し、
-unadjusted/ → spots/ へ書き込む。書き込み成功後は unadjusted/ の元ファイルを削除する。
+spots/ 内の JSON を直接上書きする。
 
 使い方:
   python tools/refetch_physical_data.py               # ドライラン（全件）
@@ -318,7 +318,7 @@ def main():
     )
     parser.add_argument(
         "--apply", action="store_true",
-        help="spots/ に書き込み、unadjusted/ の元ファイルを削除する（デフォルト: ドライラン）",
+        help="spots/ に上書き保存する（デフォルト: ドライラン）",
     )
     parser.add_argument(
         "--slug", metavar="SLUG",
@@ -349,8 +349,8 @@ def main():
         # --force なければ分類済みをスキップ
         skip_classified = not args.force
     else:
-        src_dir = REPO_ROOT / "unadjusted"
-        dst_dir = REPO_ROOT / "spots"
+        src_dir = REPO_ROOT / "spots"
+        dst_dir = None  # spots/ 内を直接上書き
         dry_run = not args.apply
         skip_classified = args.skip_classified
 
