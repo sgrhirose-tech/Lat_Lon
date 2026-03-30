@@ -603,6 +603,24 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
                     "osm_evidence":    [],
                 }
 
+    # ── ⑥-b サーフスポット判定 (OSM sport=surfing) ─────────────
+    # 砂浜スポットに限定（漁港・磯など非砂浜での誤判定を防ぐ）
+    _cls_type = classification.get("primary_type", "unknown") if classification else "unknown"
+    if skip_google or _cls_type != "sand_beach":
+        surfer_spot = False
+        if not skip_google and _cls_type != "sand_beach":
+            print(f"  サーフスポット判定... スキップ（{_cls_type}）")
+    else:
+        print("  サーフスポット判定 (OSM)...", end=" ", flush=True)
+        try:
+            from update_surfer_spots import is_surf_spot
+            surfer_spot = is_surf_spot(lat, lon)
+            print(f"→ {'true' if surfer_spot else 'false'}")
+        except Exception as e:
+            print(f"→ 失敗 ({e})")
+            surfer_spot = False
+        time.sleep(1.5)
+
     # ── JSON 組み立て ───────────────────────────────────────
     spot = {
         "slug": slug,
@@ -622,7 +640,7 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
         "physical_features": {
             "sea_bearing_deg":               sea_bearing if phys is None else phys.get("sea_bearing_deg", sea_bearing),
             "seabed_type":                   phys.get("seabed_type") if phys else None,
-            "surfer_spot":                   False,
+            "surfer_spot":                   surfer_spot,
             "nearest_20m_contour_distance_m": phys.get("nearest_20m_contour_distance_m") if phys else None,
         },
         "derived_features": {
