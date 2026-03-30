@@ -1,4 +1,9 @@
 """
+[廃止予定] このスクリプトは tools/build_spots.py に統合されました。
+
+既存 spots/ の座標だけを再補正したい場合にのみ使用してください。
+新規スポット登録は tools/build_spots.py を使ってください。
+
 釣り場座標精緻化スクリプト
 
 Google Places Text Search API で釣り場名を検索し、
@@ -137,8 +142,18 @@ def process_spot(filepath: Path, cfg: dict, dry_run: bool) -> dict:
         entry["error"] = "location フィールドが不完全"
         return entry
 
+    # 検索クエリを組み立てる（name だけ → name + city のフォールバック）
+    city = data.get("area", {}).get("city", "")
+    queries = [name]
+    if city:
+        queries.append(f"{name} {city}")
+
+    candidates = []
     try:
-        candidates = search_place(name, cfg)
+        for query in queries:
+            candidates = search_place(query, cfg)
+            if candidates:
+                break
     except Exception as e:
         logger.error("[%s] API エラー: %s", slug, e)
         entry["status"] = "ERROR"
