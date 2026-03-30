@@ -2,8 +2,8 @@
   "slug": "kazusa-minato-seaside-park",
   "name": "上総湊港海浜公園",
   "location": {
-    "latitude": 35.226285,
-    "longitude": 139.870666
+    "latitude": 35.224041,
+    "longitude": 139.8705845
   },
   "area": {
     "prefecture": "千葉県",
@@ -14,8 +14,8 @@
     "city_slug": "futtsu"
   },
   "physical_features": {
-    "sea_bearing_deg": 297.1,
-    "seabed_type": "rock",
+    "sea_bearing_deg": 295,
+    "seabed_type": "sand",
     "surfer_spot": false,
     "nearest_20m_contour_distance_m": null
   },
@@ -29,11 +29,12 @@
   },
   "classification": {
     "primary_type": "sand_beach",
-    "confidence": 0.59,
+    "confidence": 0.41,
     "secondary_flags": [],
     "source": "osm_rule",
     "osm_evidence": [
-      "natural=beach@77m"
+      "natural=beach@188m",
+      "natural=beach@233m"
     ]
   }
 }

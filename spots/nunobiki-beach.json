@@ -2,8 +2,8 @@
   "slug": "nunobiki-beach",
   "name": "布引海岸",
   "location": {
-    "latitude": 35.306204,
-    "longitude": 139.811751
+    "latitude": 35.3065955,
+    "longitude": 139.8095046
   },
   "area": {
     "prefecture": "千葉県",
@@ -14,7 +14,7 @@
     "city_slug": "futtsu"
   },
   "physical_features": {
-    "sea_bearing_deg": 156.2,
+    "sea_bearing_deg": 200,
     "seabed_type": "sand",
     "surfer_spot": false,
     "nearest_20m_contour_distance_m": null

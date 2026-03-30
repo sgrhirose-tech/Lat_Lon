@@ -1,0 +1,41 @@
+{
+  "slug": "futoma-kaigan",
+  "name": "二夕間海岸",
+  "location": {
+    "latitude": 35.121418,
+    "longitude": 140.1531672
+  },
+  "area": {
+    "prefecture": "千葉県",
+    "pref_slug": "chiba",
+    "area_name": "外房",
+    "area_slug": "sotobo",
+    "city": "鴨川市",
+    "city_slug": "kamogawa"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 145,
+    "seabed_type": "unknown",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": 1255.9
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 50,
+    "seabed_summary": ""
+  },
+  "info": {
+    "notes": "静かな海岸で投げ向き",
+    "access": "安房天津駅から徒歩20分"
+  },
+  "classification": {
+    "primary_type": "sand_beach",
+    "confidence": 0.59,
+    "secondary_flags": [
+      "parking_nearby"
+    ],
+    "source": "osm_rule",
+    "osm_evidence": [
+      "natural=beach@52m"
+    ]
+  }
+}

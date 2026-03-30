@@ -1,0 +1,40 @@
+{
+  "slug": "izumiura-kaigan",
+  "name": "和泉浦海岸",
+  "location": {
+    "latitude": 35.2870357,
+    "longitude": 140.404501
+  },
+  "area": {
+    "prefecture": "千葉県",
+    "pref_slug": "chiba",
+    "area_name": "外房",
+    "area_slug": "sotobo",
+    "city": "いすみ市",
+    "city_slug": "isumi"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 105,
+    "seabed_type": "sand",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": null
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 50,
+    "seabed_summary": ""
+  },
+  "info": {
+    "notes": "サーフで投げ釣り向き",
+    "access": "大原駅から徒歩20分"
+  },
+  "classification": {
+    "primary_type": "sand_beach",
+    "confidence": 0.43,
+    "secondary_flags": [],
+    "source": "manual",
+    "osm_evidence": [
+      "man_made=breakwater@189m",
+      "man_made=breakwater@222m"
+    ]
+  }
+}

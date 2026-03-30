@@ -167,6 +167,7 @@ body { font-family: -apple-system, sans-serif; font-size: 14px; background: #f0f
 
 /* ---- sidebar ---- */
 #area-filter { width: 100%; padding: 8px; border: none; border-bottom: 1px solid #ddd; font-size: 13px; }
+#name-filter  { width: 100%; padding: 8px; border: none; border-bottom: 1px solid #ddd; font-size: 13px; box-sizing: border-box; }
 .spot-item { padding: 8px 10px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
 .spot-item:hover { background: #e8f4fd; }
 .spot-item.active { background: #3498db; color: white; }
@@ -216,6 +217,7 @@ body { font-family: -apple-system, sans-serif; font-size: 14px; background: #f0f
   <div id="js-error" style="display:none;background:#c0392b;color:white;padding:6px 12px;font-size:12px;"></div>
   <div id="main">
     <div id="sidebar">
+      <input type="text" id="name-filter" placeholder="名前で絞り込み…">
       <select id="area-filter">
         <option value="">全エリア</option>
         <option value="相模湾">相模湾</option>
@@ -321,12 +323,14 @@ window.addEventListener('load', function() {
 });
 
 // ---- sidebar list ----
-function buildList(filter) {
+function buildList(areaFilter, nameFilter) {
+  var nf = (nameFilter || '').trim().toLowerCase();
   var list = document.getElementById('spot-list');
   list.innerHTML = '';
   SPOTS.forEach(function(s, i) {
     var areaName = (s.area && s.area.area_name) || '';
-    if (filter && areaName !== filter) return;
+    if (areaFilter && areaName !== areaFilter) return;
+    if (nf && (s.name || '').toLowerCase().indexOf(nf) === -1) return;
     var div = document.createElement('div');
     div.className = 'spot-item' + (i === currentIdx ? ' active' : '');
     div.dataset.idx = i;
@@ -336,8 +340,11 @@ function buildList(filter) {
   });
 }
 
+document.getElementById('name-filter').addEventListener('input', function() {
+  buildList(document.getElementById('area-filter').value, this.value);
+});
 document.getElementById('area-filter').addEventListener('change', function() {
-  buildList(this.value);
+  buildList(this.value, document.getElementById('name-filter').value);
 });
 
 // ---- bearing arrow ----
@@ -380,7 +387,7 @@ function showSpot(idx) {
   currentIdx = idx;
   dirty = false;
   document.getElementById('save-bar').style.display = 'none';
-  buildList(document.getElementById('area-filter').value);
+  buildList(document.getElementById('area-filter').value, document.getElementById('name-filter').value);
 
   var s = SPOTS[idx];
   var loc = s.location || {};
@@ -417,6 +424,21 @@ function showSpot(idx) {
     '<option value="true"' + (phys.surfer_spot === true ? ' selected' : '') + '>あり</option>',
     '<option value="false"' + (phys.surfer_spot !== true ? ' selected' : '') + '>なし</option>'
   ].join('');
+
+  // classification options
+  var cls = s.classification || {};
+  var PRIMARY_TYPE_OPTIONS = [
+    ['unknown',           '不明'],
+    ['breakwater',        '堤防・防波堤'],
+    ['fishing_facility',  '漁港・岸壁'],
+    ['sand_beach',        '砂浜'],
+    ['rocky_shore',       '磯・岩場']
+  ];
+  var primaryTypeOpts = PRIMARY_TYPE_OPTIONS.map(function(o) {
+    var sel = o[0] === (cls.primary_type || 'unknown') ? ' selected' : '';
+    return '<option value="' + o[0] + '"' + sel + '>' + o[1] + '</option>';
+  }).join('');
+  var clsSource = cls.source || 'manual';
 
   // area_name options
   var areaNames = Object.keys(AREA_SLUG_MAP);
@@ -464,6 +486,14 @@ function showSpot(idx) {
     row('bottom_kisugo_score', 'キスゴスコア(0-100)', 'number', der.bottom_kisugo_score != null ? der.bottom_kisugo_score : '') +
     row('seabed_summary',      '底質サマリ',           'text',   der.seabed_summary      || '') +
 
+    '<div class="section-title">施設分類</div>' +
+    '<div class="field-row"><label>施設タイプ</label>' +
+      '<select id="sel-primary-type" data-field="primary_type">' + primaryTypeOpts + '</select>' +
+    '</div>' +
+    '<div class="field-row"><label>判定ソース</label>' +
+      '<input type="text" data-field="cls_source" value="' + escHtml(clsSource) + '" readonly>' +
+    '</div>' +
+
     '<div class="section-title">アクセス・情報</div>' +
     rowArea('notes',  '備考',     info.notes  || '') +
     row('access',     'アクセス', 'text', info.access || '') +
@@ -478,6 +508,14 @@ function showSpot(idx) {
     });
   }
   document.getElementById('sel-area-name').addEventListener('change', onAreaNameChange);
+
+  var ptSel = document.getElementById('sel-primary-type');
+  if (ptSel) {
+    ptSel.addEventListener('change', function() {
+      setField('cls_source', 'manual');
+      markDirty();
+    });
+  }
 }
 
 function row(field, label, type, val, readonly, step) {
@@ -566,6 +604,10 @@ function saveChanges() {
     info: {
       notes:  fv('notes'),
       access: fv('access')
+    },
+    classification: {
+      primary_type: fv('primary_type'),
+      source:       fv('cls_source')
     }
   };
 
@@ -580,7 +622,7 @@ function saveChanges() {
   dirty = false;
   document.getElementById('save-bar').style.display = 'none';
   document.getElementById('panel-header').textContent = payload.name || s.slug || '(無名)';
-  buildList(document.getElementById('area-filter').value);
+  buildList(document.getElementById('area-filter').value, document.getElementById('name-filter').value);
 
   if (SAVE_MODE === 'http') {
     fetch('/save', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})
@@ -638,7 +680,7 @@ function onNewSpotComplete(spotJson) {
   SPOTS.push(spot);
   var newIdx = SPOTS.length - 1;
   showSpot(newIdx);
-  buildList(document.getElementById('area-filter').value);
+  buildList(document.getElementById('area-filter').value, document.getElementById('name-filter').value);
 }
 
 // ---- event delegation ----
@@ -677,7 +719,7 @@ document.getElementById('btn-modal-cancel').addEventListener('click', closeModal
 document.getElementById('btn-modal-ok').addEventListener('click', submitNewSpot);
 
 // ---- init ----
-buildList('');
+buildList('', '');
 </script>
 </body>
 </html>
@@ -738,6 +780,12 @@ def _save_spot(payload):
     for key in ("notes", "access"):
         if info.get(key) is not None:
             inf[key] = info[key]
+
+    cls_payload = payload.get("classification", {})
+    if cls_payload.get("primary_type"):
+        clf = spot.setdefault("classification", {})
+        clf["primary_type"] = cls_payload["primary_type"]
+        clf["source"] = cls_payload.get("source", "manual")
 
     with open(path, "w", encoding="utf-8") as f:
         json.dump(spot, f, ensure_ascii=False, indent=2)

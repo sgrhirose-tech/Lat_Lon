@@ -1,0 +1,42 @@
+{
+  "slug": "sagamigawa-kako",
+  "name": "相模川河口",
+  "location": {
+    "latitude": 35.3171212,
+    "longitude": 139.3686104
+  },
+  "area": {
+    "prefecture": "神奈川県",
+    "pref_slug": "kanagawa",
+    "area_name": "相模湾",
+    "area_slug": "sagamibay",
+    "city": "平塚市",
+    "city_slug": "hiratsuka"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 180,
+    "seabed_type": "sand",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": 1392.2
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 85,
+    "seabed_summary": "砂主体"
+  },
+  "info": {
+    "notes": "河口の流れ込みが魅力",
+    "access": "平塚駅からバス15分"
+  },
+  "classification": {
+    "primary_type": "breakwater",
+    "confidence": 0.62,
+    "secondary_flags": [],
+    "source": "osm_rule",
+    "osm_evidence": [
+      "man_made=breakwater@130m",
+      "man_made=breakwater@286m",
+      "natural=beach@259m",
+      "natural=beach@264m"
+    ]
+  }
+}

@@ -546,25 +546,33 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
     city             = geo_ja["city"]
 
     # ── ④ 海方向計算（確定座標から）──────────────────────────
-    print("  海方向計算 (OSM)...", end=" ", flush=True)
-    try:
-        sea_bearing = calculate_sea_bearing(lat, lon)
-        print(f"→ {sea_bearing}°")
-    except Exception as e:
-        print(f"→ 失敗 ({e})")
+    if skip_google:
+        print("  海方向計算... スキップ（--skip-google）")
         sea_bearing = None
+    else:
+        print("  海方向計算 (OSM)...", end=" ", flush=True)
+        try:
+            sea_bearing = calculate_sea_bearing(lat, lon)
+            print(f"→ {sea_bearing}°")
+        except Exception as e:
+            print(f"→ 失敗 ({e})")
+            sea_bearing = None
 
     # ── ⑤ 底質・等深線取得（海しる）────────────────────────
-    print("  底質・等深線取得 (海しる)...", end=" ", flush=True)
-    try:
-        phys = fetch_physical_data(lat, lon, sea_bearing=sea_bearing)
-        if phys:
-            print(f"→ {phys.get('seabed_type')} / 20m等深線 {phys.get('nearest_20m_contour_distance_m')}m")
-        else:
-            print("→ 取得失敗")
-    except Exception as e:
-        print(f"→ エラー ({e})")
+    if skip_google:
+        print("  底質・等深線取得... スキップ（--skip-google）")
         phys = None
+    else:
+        print("  底質・等深線取得 (海しる)...", end=" ", flush=True)
+        try:
+            phys = fetch_physical_data(lat, lon, sea_bearing=sea_bearing)
+            if phys:
+                print(f"→ {phys.get('seabed_type')} / 20m等深線 {phys.get('nearest_20m_contour_distance_m')}m")
+            else:
+                print("→ 取得失敗")
+        except Exception as e:
+            print(f"→ エラー ({e})")
+            phys = None
 
     # ── ⑥ OSM 施設分類 ──────────────────────────────────────
     print("  施設分類 (Overpass)...", end=" ", flush=True)
@@ -595,6 +603,24 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
                     "osm_evidence":    [],
                 }
 
+    # ── ⑥-b サーフスポット判定 (OSM sport=surfing) ─────────────
+    # 砂浜スポットに限定（漁港・磯など非砂浜での誤判定を防ぐ）
+    _cls_type = classification.get("primary_type", "unknown") if classification else "unknown"
+    if skip_google or _cls_type != "sand_beach":
+        surfer_spot = False
+        if not skip_google and _cls_type != "sand_beach":
+            print(f"  サーフスポット判定... スキップ（{_cls_type}）")
+    else:
+        print("  サーフスポット判定 (OSM)...", end=" ", flush=True)
+        try:
+            from update_surfer_spots import is_surf_spot
+            surfer_spot = is_surf_spot(lat, lon)
+            print(f"→ {'true' if surfer_spot else 'false'}")
+        except Exception as e:
+            print(f"→ 失敗 ({e})")
+            surfer_spot = False
+        time.sleep(1.5)
+
     # ── JSON 組み立て ───────────────────────────────────────
     spot = {
         "slug": slug,
@@ -614,7 +640,7 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
         "physical_features": {
             "sea_bearing_deg":               sea_bearing if phys is None else phys.get("sea_bearing_deg", sea_bearing),
             "seabed_type":                   phys.get("seabed_type") if phys else None,
-            "surfer_spot":                   False,
+            "surfer_spot":                   surfer_spot,
             "nearest_20m_contour_distance_m": phys.get("nearest_20m_contour_distance_m") if phys else None,
         },
         "derived_features": {

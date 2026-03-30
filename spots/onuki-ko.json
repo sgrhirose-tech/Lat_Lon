@@ -1,0 +1,43 @@
+{
+  "slug": "onuki-ko",
+  "name": "大貫港",
+  "location": {
+    "latitude": 35.2780674,
+    "longitude": 139.8484468
+  },
+  "area": {
+    "prefecture": "千葉県",
+    "pref_slug": "chiba",
+    "area_name": "内房",
+    "area_slug": "uchibo",
+    "city": "富津市",
+    "city_slug": "futtsu"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 270,
+    "seabed_type": "sand",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": null
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 80,
+    "seabed_summary": "砂主体、近傍に石要素あり"
+  },
+  "info": {
+    "notes": "内房南下の港ポイント",
+    "access": "大貫駅から徒歩15分"
+  },
+  "classification": {
+    "primary_type": "fishing_facility",
+    "confidence": 0.43,
+    "secondary_flags": [
+      "parking_nearby"
+    ],
+    "source": "manual",
+    "osm_evidence": [
+      "man_made=breakwater@209m",
+      "natural=beach@292m",
+      "waterway=dock@160m"
+    ]
+  }
+}
