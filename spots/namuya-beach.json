@@ -1,31 +1,31 @@
 {
-  "slug": "nunobiki-beach",
-  "name": "布引海岸",
+  "slug": "namuya-beach",
+  "name": "南無谷海岸",
   "location": {
-    "latitude": 35.3065955,
-    "longitude": 139.8095046
+    "latitude": 35.0602913,
+    "longitude": 139.8262274
   },
   "area": {
     "prefecture": "千葉県",
     "pref_slug": "chiba",
     "area_name": "内房",
     "area_slug": "uchibo",
-    "city": "富津市",
-    "city_slug": "futtsu"
+    "city": "南房総市",
+    "city_slug": "minamiboso"
   },
   "physical_features": {
-    "sea_bearing_deg": 200,
+    "sea_bearing_deg": 270,
     "seabed_type": "sand",
     "surfer_spot": false,
-    "nearest_20m_contour_distance_m": null
+    "nearest_20m_contour_distance_m": 1608.8
   },
   "derived_features": {
-    "bottom_kisugo_score": 85,
-    "seabed_summary": "砂主体"
+    "bottom_kisugo_score": 80,
+    "seabed_summary": "砂主体、貝殻混じり、近傍に石要素あり"
   },
   "info": {
-    "notes": "遠浅の砂浜で投げ釣り向き",
-    "access": "青堀駅からバス10分"
+    "notes": "静かな浜で人が少なめ",
+    "access": "富浦駅からバス10分"
   },
   "classification": {
     "primary_type": "sand_beach",
