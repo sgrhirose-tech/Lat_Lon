@@ -414,7 +414,7 @@ def main():
             spot_name = path.stem
         print(f"[{i}/{len(files)}] {spot_name} ({path.stem})")
 
-        dst = None if (dry_run or args.classification_only) else dst_dir / path.name
+        dst = None if dry_run else path  # spots/ 内を直接上書き（dst_dir は常に None）
 
         if process_file(
             path,
