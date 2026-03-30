@@ -520,7 +520,16 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
     )
     print(f"  エリア: {area_name} ({area_slug})")
 
-    # ── ② Nominatim 逆ジオコーディング（ja + en）────────────
+    # ── ③ Google Places 座標補正（Nominatim より先に確定座標を得る）──
+    if skip_google:
+        print("  [Google] スキップ（--skip-google）")
+        coord_source = "tsv"
+    else:
+        print("  座標補正 (Google Places)...", end=" ", flush=True)
+        lat, lon, coord_source = refine_coords(name, "", lat, lon, cfg)
+        time.sleep(cfg["request_delay_sec"])
+
+    # ── ② Nominatim 逆ジオコーディング（確定済み座標で取得）────
     print("  住所取得 (Nominatim)...", end=" ", flush=True)
     geo_ja = reverse_geocode(lat, lon, lang="ja,en")
     if not geo_ja["prefecture"]:
@@ -535,15 +544,6 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
     actual_pref      = geo_ja["prefecture"] or pref_fallback
     actual_pref_slug = PREF_SLUG_MAP.get(actual_pref, pref_slug_fallback)
     city             = geo_ja["city"]
-
-    # ── ③ Google Places 座標補正 ────────────────────────────
-    if skip_google:
-        print("  [Google] スキップ（--skip-google）")
-        coord_source = "tsv"
-    else:
-        print("  座標補正 (Google Places)...", end=" ", flush=True)
-        lat, lon, coord_source = refine_coords(name, city, lat, lon, cfg)
-        time.sleep(cfg["request_delay_sec"])
 
     # ── ④ 海方向計算（確定座標から）──────────────────────────
     print("  海方向計算 (OSM)...", end=" ", flush=True)
