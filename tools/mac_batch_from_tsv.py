@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
+[廃止予定] このスクリプトは tools/build_spots.py に統合されました。
+新規スポット登録は tools/build_spots.py を使ってください。
+
 Mac用 TSV一括JSON作成ツール
 
 tsv/ フォルダにある TSV ファイルを一括処理し、

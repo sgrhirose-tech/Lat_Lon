@@ -1,4 +1,9 @@
 """
+[廃止予定] このスクリプトは tools/build_spots.py に統合されました。
+
+既存 spots/ の座標だけを再補正したい場合にのみ使用してください。
+新規スポット登録は tools/build_spots.py を使ってください。
+
 釣り場座標精緻化スクリプト
 
 Google Places Text Search API で釣り場名を検索し、
