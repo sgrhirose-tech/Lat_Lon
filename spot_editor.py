@@ -1,12 +1,12 @@
 """
 spot_editor.py — Pythonista用スポット編集ツール
 
-unadjusted/*.json を Leaflet.js WebView で編集・保存する。
+spots/*.json を Leaflet.js WebView で編集・保存する。
 全フィールド対応。新規スポット作成も可（APIコールなし）。
 
 使い方:
   Pythonista: スクリプトを実行 → fullscreen WebView が開く
-  デスクトップ: python spot_editor.py → ブラウザで HTML を開く（参照確認用）
+  デスクトップ: python spot_editor.py → ブラウザで HTTP サーバーが起動してブラウザが開く
 """
 
 import json
@@ -19,10 +19,9 @@ import urllib.parse
 REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
 AREAS_FILE = os.path.join(REPO_ROOT, "spots", "_marine_areas.json")
 AVAILABLE_DIRS = {
-    "unadjusted": os.path.join(REPO_ROOT, "unadjusted"),
-    "spots":      os.path.join(REPO_ROOT, "spots"),
+    "spots": os.path.join(REPO_ROOT, "spots"),
 }
-DEFAULT_DIR_KEY = "unadjusted"
+DEFAULT_DIR_KEY = "spots"
 
 # slug バリデーション用定数（app/constants.py と同一の値を保つこと）
 _VALID_AREA_SLUGS = {"sagamibay", "miura", "tokyobay", "uchibo", "sotobo", "kujukuri"}
@@ -461,18 +460,13 @@ function showSpot(idx) {
       '<select data-field="surfer_spot">' + surferOpts + '</select>' +
     '</div>' +
 
-    '<div class="section-title">水深</div>' +
-    row('depth_near_m', '手前(m)',  'number', phys.depth_near_m != null ? phys.depth_near_m : '') +
-    row('depth_far_m',  '沖合(m)',  'number', phys.depth_far_m  != null ? phys.depth_far_m  : '') +
-
     '<div class="section-title">スコア・地形</div>' +
     row('bottom_kisugo_score', 'キスゴスコア(0-100)', 'number', der.bottom_kisugo_score != null ? der.bottom_kisugo_score : '') +
-    row('terrain_summary',     '地形サマリ',           'text',   der.terrain_summary     || '') +
+    row('seabed_summary',      '底質サマリ',           'text',   der.seabed_summary      || '') +
 
     '<div class="section-title">アクセス・情報</div>' +
-    rowArea('notes',     '備考',       info.notes     || '') +
-    row('access',        'アクセス',   'text',  info.access    || '') +
-    row('photo_url',     '写真URL',    'text',  info.photo_url || '') +
+    rowArea('notes',  '備考',     info.notes  || '') +
+    row('access',     'アクセス', 'text', info.access || '') +
     '';
 
   // event listeners for live bearing update
@@ -563,18 +557,15 @@ function saveChanges() {
     physical_features: {
       sea_bearing_deg: fvNum('sea_bearing_deg'),
       seabed_type:     fv('seabed_type'),
-      surfer_spot:     fv('surfer_spot') === 'true',
-      depth_near_m:    fvNum('depth_near_m'),
-      depth_far_m:     fvNum('depth_far_m')
+      surfer_spot:     fv('surfer_spot') === 'true'
     },
     derived_features: {
       bottom_kisugo_score: fvInt('bottom_kisugo_score'),
-      terrain_summary:     fv('terrain_summary')
+      seabed_summary:      fv('seabed_summary')
     },
     info: {
-      notes:     fv('notes'),
-      access:    fv('access'),
-      photo_url: fv('photo_url')
+      notes:  fv('notes'),
+      access: fv('access')
     }
   };
 
@@ -734,21 +725,17 @@ def _save_spot(payload):
         pf["seabed_type"] = phys["seabed_type"]
     if phys.get("surfer_spot") is not None:
         pf["surfer_spot"] = phys["surfer_spot"]
-    if phys.get("depth_near_m") is not None:
-        pf["depth_near_m"] = phys["depth_near_m"]
-    if phys.get("depth_far_m") is not None:
-        pf["depth_far_m"] = phys["depth_far_m"]
 
     der = payload.get("derived_features", {})
     df = spot.setdefault("derived_features", {})
     if der.get("bottom_kisugo_score") is not None:
         df["bottom_kisugo_score"] = der["bottom_kisugo_score"]
-    if der.get("terrain_summary") is not None:
-        df["terrain_summary"] = der["terrain_summary"]
+    if der.get("seabed_summary") is not None:
+        df["seabed_summary"] = der["seabed_summary"]
 
     info = payload.get("info", {})
     inf = spot.setdefault("info", {})
-    for key in ("notes", "access", "photo_url"):
+    for key in ("notes", "access"):
         if info.get(key) is not None:
             inf[key] = info[key]
 
@@ -792,20 +779,25 @@ def _create_spot(payload):
             "city_slug":  ""
         },
         "physical_features": {
-            "sea_bearing_deg": 180,
-            "seabed_type":     "sand",
-            "depth_near_m":    None,
-            "depth_far_m":     None,
-            "surfer_spot":     False
+            "sea_bearing_deg":               180,
+            "seabed_type":                   None,
+            "surfer_spot":                   False,
+            "nearest_20m_contour_distance_m": None,
         },
         "derived_features": {
             "bottom_kisugo_score": None,
-            "terrain_summary":     ""
+            "seabed_summary":      ""
         },
         "info": {
-            "notes":     "",
-            "access":    "",
-            "photo_url": f"https://raw.githubusercontent.com/sgrhirose-tech/fishing/resources/photos/{slug}.jpg"
+            "notes":  "",
+            "access": ""
+        },
+        "classification": {
+            "primary_type":    "unknown",
+            "confidence":      0.0,
+            "secondary_flags": [],
+            "source":          "manual",
+            "osm_evidence":    []
         }
     }
 
