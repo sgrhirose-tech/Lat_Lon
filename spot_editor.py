@@ -167,6 +167,7 @@ body { font-family: -apple-system, sans-serif; font-size: 14px; background: #f0f
 
 /* ---- sidebar ---- */
 #area-filter { width: 100%; padding: 8px; border: none; border-bottom: 1px solid #ddd; font-size: 13px; }
+#name-filter  { width: 100%; padding: 8px; border: none; border-bottom: 1px solid #ddd; font-size: 13px; box-sizing: border-box; }
 .spot-item { padding: 8px 10px; cursor: pointer; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
 .spot-item:hover { background: #e8f4fd; }
 .spot-item.active { background: #3498db; color: white; }
@@ -216,6 +217,7 @@ body { font-family: -apple-system, sans-serif; font-size: 14px; background: #f0f
   <div id="js-error" style="display:none;background:#c0392b;color:white;padding:6px 12px;font-size:12px;"></div>
   <div id="main">
     <div id="sidebar">
+      <input type="text" id="name-filter" placeholder="名前で絞り込み…">
       <select id="area-filter">
         <option value="">全エリア</option>
         <option value="相模湾">相模湾</option>
@@ -321,12 +323,14 @@ window.addEventListener('load', function() {
 });
 
 // ---- sidebar list ----
-function buildList(filter) {
+function buildList(areaFilter, nameFilter) {
+  var nf = (nameFilter || '').trim().toLowerCase();
   var list = document.getElementById('spot-list');
   list.innerHTML = '';
   SPOTS.forEach(function(s, i) {
     var areaName = (s.area && s.area.area_name) || '';
-    if (filter && areaName !== filter) return;
+    if (areaFilter && areaName !== areaFilter) return;
+    if (nf && (s.name || '').toLowerCase().indexOf(nf) === -1) return;
     var div = document.createElement('div');
     div.className = 'spot-item' + (i === currentIdx ? ' active' : '');
     div.dataset.idx = i;
@@ -336,8 +340,11 @@ function buildList(filter) {
   });
 }
 
+document.getElementById('name-filter').addEventListener('input', function() {
+  buildList(document.getElementById('area-filter').value, this.value);
+});
 document.getElementById('area-filter').addEventListener('change', function() {
-  buildList(this.value);
+  buildList(this.value, document.getElementById('name-filter').value);
 });
 
 // ---- bearing arrow ----
@@ -380,7 +387,7 @@ function showSpot(idx) {
   currentIdx = idx;
   dirty = false;
   document.getElementById('save-bar').style.display = 'none';
-  buildList(document.getElementById('area-filter').value);
+  buildList(document.getElementById('area-filter').value, document.getElementById('name-filter').value);
 
   var s = SPOTS[idx];
   var loc = s.location || {};
@@ -615,7 +622,7 @@ function saveChanges() {
   dirty = false;
   document.getElementById('save-bar').style.display = 'none';
   document.getElementById('panel-header').textContent = payload.name || s.slug || '(無名)';
-  buildList(document.getElementById('area-filter').value);
+  buildList(document.getElementById('area-filter').value, document.getElementById('name-filter').value);
 
   if (SAVE_MODE === 'http') {
     fetch('/save', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)})
@@ -673,7 +680,7 @@ function onNewSpotComplete(spotJson) {
   SPOTS.push(spot);
   var newIdx = SPOTS.length - 1;
   showSpot(newIdx);
-  buildList(document.getElementById('area-filter').value);
+  buildList(document.getElementById('area-filter').value, document.getElementById('name-filter').value);
 }
 
 // ---- event delegation ----
@@ -712,7 +719,7 @@ document.getElementById('btn-modal-cancel').addEventListener('click', closeModal
 document.getElementById('btn-modal-ok').addEventListener('click', submitNewSpot);
 
 // ---- init ----
-buildList('');
+buildList('', '');
 </script>
 </body>
 </html>
