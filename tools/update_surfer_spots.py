@@ -37,7 +37,7 @@ def is_surf_spot(lat, lon):
         )
     except Exception as e:
         print(f"    Overpass エラー: {e}")
-        return False
+        return None  # None = 判定不能（上書きしない）
 
 
 def main():
@@ -77,6 +77,9 @@ def main():
             continue
 
         surf = is_surf_spot(lat, lon)
+        if surf is None:
+            print(f"  エラー（スキップ）: {spot.get('name', path.stem)}")
+            continue
         marker = " ★変更" if surf != current else ""
         label = "true ✓" if surf else "false"
         print(f"  {spot.get('name', path.stem)} ({path.stem}): {label}{marker}")
@@ -90,7 +93,7 @@ def main():
                     encoding="utf-8"
                 )
 
-        time.sleep(1.5)  # Overpass レート制限対策
+        time.sleep(3.0)  # Overpass レート制限対策（429/504 軽減）
 
     mode = "保存済み" if args.apply else "ドライラン"
     print(f"\n[{mode}] {changed}件変更対象")
