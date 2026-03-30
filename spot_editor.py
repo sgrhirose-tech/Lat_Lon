@@ -24,8 +24,12 @@ AVAILABLE_DIRS = {
 DEFAULT_DIR_KEY = "spots"
 
 # slug バリデーション用定数（app/constants.py と同一の値を保つこと）
-_VALID_AREA_SLUGS = {"sagamibay", "miura", "tokyobay", "uchibo", "sotobo", "kujukuri"}
-_VALID_PREF_SLUGS = {"kanagawa", "tokyo", "chiba"}
+_VALID_AREA_SLUGS = {
+    "sagamibay", "miura", "tokyobay", "uchibo", "sotobo", "kujukuri",
+    "higashi-izu", "minami-izu", "nishi-izu",
+    "suruga-bay", "enshu-nada", "mikawa-bay", "isewan", "kumano-nada",
+}
+_VALID_PREF_SLUGS = {"kanagawa", "tokyo", "chiba", "shizuoka", "aichi", "mie"}
 _CITY_SLUG_RE = re.compile(r'^[a-z0-9\-]+$')
 
 
@@ -56,22 +60,20 @@ BEARING_OPTIONS = list(range(0, 360, 5))
 
 # area_name → (area_slug, pref_slug, prefecture)
 AREA_MAP = {
-    "相模湾":     ("sagamibay",      "kanagawa", "神奈川県"),
-    "三浦半島":   ("miura",          "kanagawa", "神奈川県"),
-    "東京湾":     ("tokyobay",       "kanagawa", "神奈川県"),
-    "内房":       ("uchibo",         "chiba",    "千葉県"),
-    "外房":       ("sotobo",         "chiba",    "千葉県"),
-    "九十九里":   ("kujukuri",       "chiba",    "千葉県"),
-    "東伊豆":     ("higashi-izu",    "shizuoka", "静岡県"),
-    "南伊豆":     ("minami-izu",     "shizuoka", "静岡県"),
-    "西伊豆":     ("nishi-izu",      "shizuoka", "静岡県"),
-    "駿河":       ("suruga",         "shizuoka", "静岡県"),
-    "遠州":       ("enshu",          "shizuoka", "静岡県"),
-    "東三河":     ("higashi-mikawa", "aichi",    "愛知県"),
-    "西三河":     ("nishi-mikawa",   "aichi",    "愛知県"),
-    "尾張":       ("owari",          "aichi",    "愛知県"),
-    "三重北中部": ("mie-north",      "mie",      "三重県"),
-    "三重南部":   ("mie-south",      "mie",      "三重県"),
+    "相模湾":   ("sagamibay",   "kanagawa", "神奈川県"),
+    "三浦半島": ("miura",       "kanagawa", "神奈川県"),
+    "東京湾":   ("tokyobay",    "kanagawa", "神奈川県"),
+    "内房":     ("uchibo",      "chiba",    "千葉県"),
+    "外房":     ("sotobo",      "chiba",    "千葉県"),
+    "九十九里": ("kujukuri",    "chiba",    "千葉県"),
+    "東伊豆":   ("higashi-izu", "shizuoka", "静岡県"),
+    "南伊豆":   ("minami-izu",  "shizuoka", "静岡県"),
+    "西伊豆":   ("nishi-izu",   "shizuoka", "静岡県"),
+    "駿河湾":   ("suruga-bay",  "shizuoka", "静岡県"),
+    "遠州灘":   ("enshu-nada",  "shizuoka", "静岡県"),  # 静岡・愛知共用
+    "三河湾":   ("mikawa-bay",  "aichi",    "愛知県"),
+    "伊勢湾":   ("isewan",      "aichi",    "愛知県"),  # 愛知・三重共用
+    "熊野灘":   ("kumano-nada", "mie",      "三重県"),
 }
 
 
@@ -229,6 +231,11 @@ body { font-family: -apple-system, sans-serif; font-size: 14px; background: #f0f
         <option value="東伊豆">東伊豆</option>
         <option value="南伊豆">南伊豆</option>
         <option value="西伊豆">西伊豆</option>
+        <option value="駿河湾">駿河湾</option>
+        <option value="遠州灘">遠州灘</option>
+        <option value="三河湾">三河湾</option>
+        <option value="伊勢湾">伊勢湾</option>
+        <option value="熊野灘">熊野灘</option>
       </select>
       <div id="spot-list"></div>
     </div>
@@ -273,7 +280,12 @@ var AREA_SLUG_MAP = {
   "九十九里": ["kujukuri",   "chiba",    "千葉県"],
   "東伊豆":   ["higashi-izu", "shizuoka", "静岡県"],
   "南伊豆":   ["minami-izu",  "shizuoka", "静岡県"],
-  "西伊豆":   ["nishi-izu",   "shizuoka", "静岡県"]
+  "西伊豆":   ["nishi-izu",   "shizuoka", "静岡県"],
+  "駿河湾":   ["suruga-bay",  "shizuoka", "静岡県"],
+  "遠州灘":   ["enshu-nada",  "shizuoka", "静岡県"],
+  "三河湾":   ["mikawa-bay",  "aichi",    "愛知県"],
+  "伊勢湾":   ["isewan",      "aichi",    "愛知県"],
+  "熊野灘":   ["kumano-nada", "mie",      "三重県"]
 };
 var SEABED_OPTIONS = __SEABED_OPTIONS_JSON__;
 var BEARING_OPTIONS = __BEARING_OPTIONS_JSON__;
