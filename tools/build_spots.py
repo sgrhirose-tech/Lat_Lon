@@ -603,6 +603,20 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
                     "osm_evidence":    [],
                 }
 
+    # ── ⑥-b サーフスポット判定 (OSM sport=surfing) ─────────────
+    if skip_google:
+        surfer_spot = False
+    else:
+        print("  サーフスポット判定 (OSM)...", end=" ", flush=True)
+        try:
+            from update_surfer_spots import is_surf_spot
+            surfer_spot = is_surf_spot(lat, lon)
+            print(f"→ {'true' if surfer_spot else 'false'}")
+        except Exception as e:
+            print(f"→ 失敗 ({e})")
+            surfer_spot = False
+        time.sleep(1.5)
+
     # ── JSON 組み立て ───────────────────────────────────────
     spot = {
         "slug": slug,
@@ -622,7 +636,7 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
         "physical_features": {
             "sea_bearing_deg":               sea_bearing if phys is None else phys.get("sea_bearing_deg", sea_bearing),
             "seabed_type":                   phys.get("seabed_type") if phys else None,
-            "surfer_spot":                   False,
+            "surfer_spot":                   surfer_spot,
             "nearest_20m_contour_distance_m": phys.get("nearest_20m_contour_distance_m") if phys else None,
         },
         "derived_features": {
