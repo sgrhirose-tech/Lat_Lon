@@ -28,13 +28,13 @@
     "access": "腰越駅から徒歩5分"
   },
   "classification": {
-    "primary_type": "sand_beach",
+    "primary_type": "fishing_facility",
     "confidence": 0.41,
     "secondary_flags": [
       "cliff",
       "parking_nearby"
     ],
-    "source": "osm_rule",
+    "source": "manual",
     "osm_evidence": [
       "natural=bare_rock@296m",
       "natural=beach@278m",
