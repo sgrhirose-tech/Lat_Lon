@@ -167,6 +167,19 @@ def bearing_deg(lat1, lon1, lat2, lon2):
     return (math.degrees(math.atan2(x, y)) + 360) % 360
 
 
+def weighted_circular_mean(seg_list):
+    """[(distance_m, bearing_deg), ...] の距離加重円形平均を返す。"""
+    sin_sum = cos_sum = weight_sum = 0.0
+    for dist, brng in seg_list:
+        w = 1.0 / max(dist, 1.0)
+        r = math.radians(brng)
+        sin_sum += w * math.sin(r)
+        cos_sum += w * math.cos(r)
+        weight_sum += w
+    return (math.degrees(math.atan2(sin_sum / weight_sum,
+                                    cos_sum / weight_sum)) + 360) % 360
+
+
 def nearest_point_on_segment(px, py, ax, ay, bx, by):
     dlat = bx - ax
     dlon = by - ay
@@ -253,8 +266,10 @@ def calculate_sea_bearing(lat, lon, search_radius_m=10000):
         return None
 
     print(f"    [{source}] {len(elements)}ウェイ発見 セグメント解析中...")
+    _NEAR_THRESHOLD_M = 500  # この距離以内のセグメントを集約
     best_dist = float("inf")
     best_seg_bearing = None
+    near_segs = []  # (distance_m, seg_bearing) の候補リスト
 
     for way in elements:
         geom = way.get("geometry", [])
@@ -270,11 +285,17 @@ def calculate_sea_bearing(lat, lon, search_radius_m=10000):
             if d < best_dist:
                 best_dist = d
                 best_seg_bearing = seg_b
+            if d <= _NEAR_THRESHOLD_M:
+                near_segs.append((d, seg_b))
 
     if best_seg_bearing is None:
         return None
 
-    return round((best_seg_bearing + 90) % 360, 1)
+    # 500m 以内に複数セグメントあれば距離加重円形平均、なければ最近傍1本
+    mean_b = weighted_circular_mean(near_segs) if near_segs else best_seg_bearing
+
+    # OSM coastline 規約: 進行方向の左が海 → -90°
+    return round((mean_b - 90 + 360) % 360, 1)
 
 
 # ──────────────────────────────────────────
