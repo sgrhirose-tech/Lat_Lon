@@ -1,0 +1,43 @@
+{
+  "slug": "sakawa",
+  "name": "酒匂海岸（小田原）",
+  "location": {
+    "latitude": 35.2620713,
+    "longitude": 139.1866594
+  },
+  "area": {
+    "prefecture": "神奈川県",
+    "pref_slug": "kanagawa",
+    "area_name": "相模湾",
+    "area_slug": "sagamibay",
+    "city": "小田原市",
+    "city_slug": "odawara"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 135.5,
+    "seabed_type": "sand",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": 338.7
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 85,
+    "seabed_summary": "砂主体、急深寄り"
+  },
+  "info": {
+    "notes": "比較的空いている穴場。砂地が広がる",
+    "access": "鴨宮駅から車10分"
+  },
+  "classification": {
+    "primary_type": "sand_beach",
+    "confidence": 0.59,
+    "secondary_flags": [
+      "parking_nearby"
+    ],
+    "source": "osm_rule",
+    "osm_evidence": [
+      "natural=beach@156m",
+      "natural=beach@250m",
+      "natural=beach@93m"
+    ]
+  }
+}

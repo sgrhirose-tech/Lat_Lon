@@ -1,0 +1,45 @@
+{
+  "slug": "maebara",
+  "name": "前原",
+  "location": {
+    "latitude": 35.1009685,
+    "longitude": 140.1052254
+  },
+  "area": {
+    "prefecture": "千葉県",
+    "pref_slug": "chiba",
+    "area_name": "外房",
+    "area_slug": "sotobo",
+    "city": "鴨川市",
+    "city_slug": "kamogawa"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 100,
+    "seabed_type": "sand",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": 1686.9
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 80,
+    "seabed_summary": "砂主体、貝殻混じり、近傍に石要素あり"
+  },
+  "info": {
+    "notes": "市街近くで手軽な護岸",
+    "access": "安房鴨川駅から徒歩15分"
+  },
+  "classification": {
+    "primary_type": "breakwater",
+    "confidence": 0.62,
+    "secondary_flags": [
+      "marina",
+      "parking_nearby"
+    ],
+    "source": "osm_rule",
+    "osm_evidence": [
+      "leisure=marina@290m",
+      "man_made=breakwater@134m",
+      "man_made=breakwater@254m",
+      "natural=beach@224m"
+    ]
+  }
+}

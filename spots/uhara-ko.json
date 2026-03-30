@@ -1,0 +1,45 @@
+{
+  "slug": "uhara-ko",
+  "name": "鵜原港",
+  "location": {
+    "latitude": 35.1337378,
+    "longitude": 140.2790165
+  },
+  "area": {
+    "prefecture": "千葉県",
+    "pref_slug": "chiba",
+    "area_name": "外房",
+    "area_slug": "sotobo",
+    "city": "勝浦市",
+    "city_slug": "katsuura"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 180,
+    "seabed_type": "rock",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": 1050.1
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 35,
+    "seabed_summary": "石・岩主体、貝殻混じり、近傍に石要素あり"
+  },
+  "info": {
+    "notes": "外房の人気港ポイント",
+    "access": "鵜原駅から徒歩10分"
+  },
+  "classification": {
+    "primary_type": "fishing_facility",
+    "confidence": 0.9,
+    "secondary_flags": [
+      "harbour",
+      "parking_nearby"
+    ],
+    "source": "osm_rule",
+    "osm_evidence": [
+      "natural=bare_rock@198m",
+      "natural=bare_rock@222m",
+      "waterway=dock@126m",
+      "waterway=dock@13m"
+    ]
+  }
+}

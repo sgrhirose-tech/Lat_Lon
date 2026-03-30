@@ -1,0 +1,40 @@
+{
+  "slug": "maguchi-gyoko",
+  "name": "間口漁港",
+  "location": {
+    "latitude": 35.1445995,
+    "longitude": 139.6773326
+  },
+  "area": {
+    "prefecture": "神奈川県",
+    "pref_slug": "kanagawa",
+    "area_name": "三浦半島",
+    "area_slug": "miura",
+    "city": "三浦市",
+    "city_slug": "miura"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 130,
+    "seabed_type": "rock",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": 1098.4
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 35,
+    "seabed_summary": "石・岩主体、近傍に石要素あり"
+  },
+  "info": {
+    "notes": "外洋寄りの漁港ポイント",
+    "access": "三崎口駅からバス20分"
+  },
+  "classification": {
+    "primary_type": "fishing_facility",
+    "confidence": 0.85,
+    "secondary_flags": [],
+    "source": "osm_rule",
+    "osm_evidence": [
+      "harbour=yes@13m",
+      "natural=bare_rock@253m"
+    ]
+  }
+}

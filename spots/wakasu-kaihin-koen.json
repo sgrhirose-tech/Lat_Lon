@@ -1,0 +1,40 @@
+{
+  "slug": "wakasu-kaihin-koen",
+  "name": "若洲海浜公園",
+  "location": {
+    "latitude": 35.6141161,
+    "longitude": 139.8300362
+  },
+  "area": {
+    "prefecture": "東京都",
+    "pref_slug": "tokyo",
+    "area_name": "東京湾",
+    "area_slug": "tokyobay",
+    "city": "江東区",
+    "city_slug": "koto"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 310,
+    "seabed_type": "rock",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": null
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 35,
+    "seabed_summary": "石・岩主体、貝殻混じり、近傍に石要素あり"
+  },
+  "info": {
+    "notes": "東京湾奥の定番公園",
+    "access": "新木場駅からバス15分"
+  },
+  "classification": {
+    "primary_type": "breakwater",
+    "confidence": 0.81,
+    "secondary_flags": [],
+    "source": "osm_rule",
+    "osm_evidence": [
+      "leisure=fishing@63m",
+      "man_made=breakwater@20m"
+    ]
+  }
+}

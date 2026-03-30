@@ -1,0 +1,37 @@
+{
+  "slug": "banzu-higata",
+  "name": "盤洲干潟",
+  "location": {
+    "latitude": 35.4137465,
+    "longitude": 139.8993015
+  },
+  "area": {
+    "prefecture": "千葉県",
+    "pref_slug": "chiba",
+    "area_name": "東京湾",
+    "area_slug": "tokyobay",
+    "city": "木更津市",
+    "city_slug": "kisarazu"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 270,
+    "seabed_type": "unknown",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": null
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 50,
+    "seabed_summary": ""
+  },
+  "info": {
+    "notes": "遠浅で干潟特有の狙い場",
+    "access": "巌根駅からバス20分"
+  },
+  "classification": {
+    "primary_type": "unknown",
+    "confidence": 0.0,
+    "secondary_flags": [],
+    "source": "osm_rule",
+    "osm_evidence": []
+  }
+}
