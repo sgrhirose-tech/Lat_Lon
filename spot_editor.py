@@ -226,6 +226,9 @@ body { font-family: -apple-system, sans-serif; font-size: 14px; background: #f0f
         <option value="内房">内房</option>
         <option value="外房">外房</option>
         <option value="九十九里">九十九里</option>
+        <option value="東伊豆">東伊豆</option>
+        <option value="南伊豆">南伊豆</option>
+        <option value="西伊豆">西伊豆</option>
       </select>
       <div id="spot-list"></div>
     </div>
@@ -267,7 +270,10 @@ var AREA_SLUG_MAP = {
   "東京湾":   ["tokyobay",   "kanagawa", "神奈川県"],
   "内房":     ["uchibo",     "chiba",    "千葉県"],
   "外房":     ["sotobo",     "chiba",    "千葉県"],
-  "九十九里": ["kujukuri",   "chiba",    "千葉県"]
+  "九十九里": ["kujukuri",   "chiba",    "千葉県"],
+  "東伊豆":   ["higashi-izu", "shizuoka", "静岡県"],
+  "南伊豆":   ["minami-izu",  "shizuoka", "静岡県"],
+  "西伊豆":   ["nishi-izu",   "shizuoka", "静岡県"]
 };
 var SEABED_OPTIONS = __SEABED_OPTIONS_JSON__;
 var BEARING_OPTIONS = __BEARING_OPTIONS_JSON__;
