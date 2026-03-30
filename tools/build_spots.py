@@ -295,7 +295,8 @@ def search_place(name: str, cfg: dict) -> list:
             for r in results[: cfg["max_candidates"]]:
                 loc = r.get("geometry", {}).get("location", {})
                 if "lat" in loc and "lng" in loc:
-                    candidates.append({"name": r["name"], "lat": loc["lat"], "lon": loc["lng"]})
+                    candidates.append({"name": r["name"], "lat": loc["lat"], "lon": loc["lng"],
+                                       "address": r.get("formatted_address", "")})
             return candidates
         except requests.RequestException as e:
             if attempt < 3:
@@ -317,11 +318,12 @@ def haversine_km(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
     return R * 2 * math.asin(math.sqrt(a))
 
 
-def refine_coords(name: str, city: str, lat: float, lon: float, cfg: dict) -> tuple:
+def refine_coords(name: str, city: str, lat: float, lon: float, cfg: dict,
+                  pref_hint: str = "") -> tuple:
     """
     Google Places で座標を補正する。
     Returns: (new_lat, new_lon, source_label)
-      source_label: "google" (補正成功) / "tsv" (補正なし)
+      source_label: "google" / "google_exact" (補正成功) / "tsv" (補正なし)
     """
     queries = [name]
     if city:
@@ -344,6 +346,12 @@ def refine_coords(name: str, city: str, lat: float, lon: float, cfg: dict) -> tu
         print(f"  [Google] 補正: {dist * 1000:.0f}m → '{best['name']}'")
         return best["lat"], best["lon"], "google"
     else:
+        # 名称完全一致 かつ 都道府県一致なら距離閾値を無視して補正
+        name_match = best["name"] == name
+        pref_match = pref_hint and pref_hint in best.get("address", "")
+        if name_match and pref_match:
+            print(f"  [Google] 補正(完全一致・{pref_hint}): {dist:.2f}km → '{best['name']}'")
+            return best["lat"], best["lon"], "google_exact"
         print(f"  [Google] TOO_FAR ({dist:.2f}km) '{best['name']}' — TSV 座標を使用")
         return lat, lon, "tsv"
 
@@ -526,7 +534,8 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
         coord_source = "tsv"
     else:
         print("  座標補正 (Google Places)...", end=" ", flush=True)
-        lat, lon, coord_source = refine_coords(name, "", lat, lon, cfg)
+        lat, lon, coord_source = refine_coords(name, "", lat, lon, cfg,
+                                                pref_hint=pref_fallback)
         time.sleep(cfg["request_delay_sec"])
 
     # ── ② Nominatim 逆ジオコーディング（確定済み座標で取得）────
