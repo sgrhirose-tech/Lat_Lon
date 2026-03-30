@@ -16,7 +16,7 @@ import re
 import sys
 import urllib.parse
 
-REPO_ROOT = os.path.dirname(os.path.abspath(__file__))
+REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 AREAS_FILE = os.path.join(REPO_ROOT, "spots", "_marine_areas.json")
 AVAILABLE_DIRS = {
     "spots": os.path.join(REPO_ROOT, "spots"),
