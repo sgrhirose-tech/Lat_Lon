@@ -24,8 +24,9 @@ AVAILABLE_DIRS = {
 DEFAULT_DIR_KEY = "spots"
 
 # slug バリデーション用定数（app/constants.py と同一の値を保つこと）
-_VALID_AREA_SLUGS = {"sagamibay", "miura", "tokyobay", "uchibo", "sotobo", "kujukuri"}
-_VALID_PREF_SLUGS = {"kanagawa", "tokyo", "chiba"}
+_VALID_AREA_SLUGS = {"sagamibay", "miura", "tokyobay", "uchibo", "sotobo", "kujukuri",
+                     "higashi-izu", "minami-izu", "nishi-izu"}
+_VALID_PREF_SLUGS = {"kanagawa", "tokyo", "chiba", "shizuoka"}
 _CITY_SLUG_RE = re.compile(r'^[a-z0-9\-]+$')
 
 
