@@ -14,7 +14,7 @@
     "city_slug": "futtsu"
   },
   "physical_features": {
-    "sea_bearing_deg": 242.8,
+    "sea_bearing_deg": 245,
     "seabed_type": "sand",
     "surfer_spot": false,
     "nearest_20m_contour_distance_m": null
@@ -28,10 +28,10 @@
     "access": "青堀駅から徒歩30分"
   },
   "classification": {
-    "primary_type": "unknown",
+    "primary_type": "fishing_facility",
     "confidence": 0.0,
     "secondary_flags": [],
-    "source": "osm_rule",
+    "source": "manual",
     "osm_evidence": []
   }
 }

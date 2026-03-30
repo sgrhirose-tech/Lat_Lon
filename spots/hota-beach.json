@@ -1,31 +1,31 @@
 {
-  "slug": "nunobiki-beach",
-  "name": "布引海岸",
+  "slug": "hota-beach",
+  "name": "保田海岸",
   "location": {
-    "latitude": 35.3065955,
-    "longitude": 139.8095046
+    "latitude": 35.1411969,
+    "longitude": 139.8348883
   },
   "area": {
     "prefecture": "千葉県",
     "pref_slug": "chiba",
     "area_name": "内房",
     "area_slug": "uchibo",
-    "city": "富津市",
-    "city_slug": "futtsu"
+    "city": "鋸南町",
+    "city_slug": "kyonan"
   },
   "physical_features": {
-    "sea_bearing_deg": 200,
+    "sea_bearing_deg": 250,
     "seabed_type": "sand",
     "surfer_spot": false,
-    "nearest_20m_contour_distance_m": null
+    "nearest_20m_contour_distance_m": 1131.4
   },
   "derived_features": {
-    "bottom_kisugo_score": 85,
-    "seabed_summary": "砂主体"
+    "bottom_kisugo_score": 80,
+    "seabed_summary": "砂主体、近傍に石要素あり"
   },
   "info": {
-    "notes": "遠浅の砂浜で投げ釣り向き",
-    "access": "青堀駅からバス10分"
+    "notes": "キス狙いで人気の砂浜",
+    "access": "保田駅から徒歩10分"
   },
   "classification": {
     "primary_type": "sand_beach",

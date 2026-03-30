@@ -2,8 +2,8 @@
   "slug": "minatogawa-river-mouth",
   "name": "湊川河口",
   "location": {
-    "latitude": 35.216258,
-    "longitude": 139.870663
+    "latitude": 35.2186887,
+    "longitude": 139.8656344
   },
   "area": {
     "prefecture": "千葉県",
@@ -14,8 +14,8 @@
     "city_slug": "futtsu"
   },
   "physical_features": {
-    "sea_bearing_deg": 62.7,
-    "seabed_type": "unknown",
+    "sea_bearing_deg": 305,
+    "seabed_type": "sand",
     "surfer_spot": false,
     "nearest_20m_contour_distance_m": null
   },
@@ -28,10 +28,10 @@
     "access": "上総湊駅から徒歩12分"
   },
   "classification": {
-    "primary_type": "unknown",
+    "primary_type": "breakwater",
     "confidence": 0.0,
     "secondary_flags": [],
-    "source": "osm_rule",
+    "source": "manual",
     "osm_evidence": []
   }
 }

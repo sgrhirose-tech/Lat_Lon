@@ -1,9 +1,9 @@
 {
-  "slug": "kazusa-minato-seaside-park",
-  "name": "上総湊港海浜公園",
+  "slug": "kanaya-ferry-port",
+  "name": "金谷フェリー港",
   "location": {
-    "latitude": 35.224041,
-    "longitude": 139.8705845
+    "latitude": 35.1692,
+    "longitude": 139.817371
   },
   "area": {
     "prefecture": "千葉県",
@@ -14,27 +14,26 @@
     "city_slug": "futtsu"
   },
   "physical_features": {
-    "sea_bearing_deg": 295,
-    "seabed_type": "sand",
+    "sea_bearing_deg": 230,
+    "seabed_type": "rock",
     "surfer_spot": false,
-    "nearest_20m_contour_distance_m": null
+    "nearest_20m_contour_distance_m": 712.7
   },
   "derived_features": {
     "bottom_kisugo_score": 35,
     "seabed_summary": "石・岩主体、近傍に石要素あり"
   },
   "info": {
-    "notes": "砂浜から投げやすい公園",
-    "access": "上総湊駅から徒歩12分"
+    "notes": "港内岸壁で回遊魚実績",
+    "access": "浜金谷駅から徒歩8分"
   },
   "classification": {
-    "primary_type": "sand_beach",
-    "confidence": 0.41,
+    "primary_type": "fishing_facility",
+    "confidence": 0.59,
     "secondary_flags": [],
     "source": "osm_rule",
     "osm_evidence": [
-      "natural=beach@188m",
-      "natural=beach@233m"
+      "waterway=dock@113m"
     ]
   }
 }
