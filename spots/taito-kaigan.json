@@ -1,0 +1,41 @@
+{
+  "slug": "taito-kaigan",
+  "name": "太東海岸",
+  "location": {
+    "latitude": 35.3310919,
+    "longitude": 140.3970337
+  },
+  "area": {
+    "prefecture": "千葉県",
+    "pref_slug": "chiba",
+    "area_name": "外房",
+    "area_slug": "sotobo",
+    "city": "一宮町",
+    "city_slug": "ichinomiya"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 65,
+    "seabed_type": "unknown",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": null
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 50,
+    "seabed_summary": ""
+  },
+  "info": {
+    "notes": "広めのサーフポイント",
+    "access": "太東駅から徒歩25分"
+  },
+  "classification": {
+    "primary_type": "sand_beach",
+    "confidence": 0.59,
+    "secondary_flags": [
+      "parking_nearby"
+    ],
+    "source": "osm_rule",
+    "osm_evidence": [
+      "natural=beach@149m"
+    ]
+  }
+}

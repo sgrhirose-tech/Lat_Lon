@@ -1,0 +1,39 @@
+{
+  "slug": "kisarazu-ko",
+  "name": "木更津港",
+  "location": {
+    "latitude": 35.3825423,
+    "longitude": 139.9162745
+  },
+  "area": {
+    "prefecture": "千葉県",
+    "pref_slug": "chiba",
+    "area_name": "東京湾",
+    "area_slug": "tokyobay",
+    "city": "木更津市",
+    "city_slug": "kisarazu"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 0,
+    "seabed_type": "sand",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": null
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 85,
+    "seabed_summary": "砂主体"
+  },
+  "info": {
+    "notes": "港内各所を探れる",
+    "access": "木更津駅から徒歩20分"
+  },
+  "classification": {
+    "primary_type": "fishing_facility",
+    "confidence": 0.75,
+    "secondary_flags": [],
+    "source": "name_keyword",
+    "osm_evidence": [
+      "keyword:港"
+    ]
+  }
+}

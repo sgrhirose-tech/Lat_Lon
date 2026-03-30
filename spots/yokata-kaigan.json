@@ -1,0 +1,39 @@
+{
+  "slug": "yokata-kaigan",
+  "name": "屋形海岸",
+  "location": {
+    "latitude": 35.6056727,
+    "longitude": 140.5293846
+  },
+  "area": {
+    "prefecture": "千葉県",
+    "pref_slug": "chiba",
+    "area_name": "九十九里",
+    "area_slug": "kujukuri",
+    "city": "横芝光町",
+    "city_slug": "yokoshibahikari"
+  },
+  "physical_features": {
+    "sea_bearing_deg": 135,
+    "seabed_type": "sand",
+    "surfer_spot": false,
+    "nearest_20m_contour_distance_m": null
+  },
+  "derived_features": {
+    "bottom_kisugo_score": 85,
+    "seabed_summary": "砂主体"
+  },
+  "info": {
+    "notes": "遠浅の投げ釣り場",
+    "access": "横芝駅からバス20分"
+  },
+  "classification": {
+    "primary_type": "sand_beach",
+    "confidence": 0.7,
+    "secondary_flags": [],
+    "source": "name_keyword",
+    "osm_evidence": [
+      "keyword:海岸"
+    ]
+  }
+}
