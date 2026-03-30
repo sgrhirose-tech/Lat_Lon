@@ -418,6 +418,21 @@ function showSpot(idx) {
     '<option value="false"' + (phys.surfer_spot !== true ? ' selected' : '') + '>なし</option>'
   ].join('');
 
+  // classification options
+  var cls = s.classification || {};
+  var PRIMARY_TYPE_OPTIONS = [
+    ['unknown',           '不明'],
+    ['breakwater',        '堤防・防波堤'],
+    ['fishing_facility',  '漁港・岸壁'],
+    ['sand_beach',        '砂浜'],
+    ['rocky_shore',       '磯・岩場']
+  ];
+  var primaryTypeOpts = PRIMARY_TYPE_OPTIONS.map(function(o) {
+    var sel = o[0] === (cls.primary_type || 'unknown') ? ' selected' : '';
+    return '<option value="' + o[0] + '"' + sel + '>' + o[1] + '</option>';
+  }).join('');
+  var clsSource = cls.source || 'manual';
+
   // area_name options
   var areaNames = Object.keys(AREA_SLUG_MAP);
   var areaNameOpts = areaNames.map(function(n) {
@@ -464,6 +479,14 @@ function showSpot(idx) {
     row('bottom_kisugo_score', 'キスゴスコア(0-100)', 'number', der.bottom_kisugo_score != null ? der.bottom_kisugo_score : '') +
     row('seabed_summary',      '底質サマリ',           'text',   der.seabed_summary      || '') +
 
+    '<div class="section-title">施設分類</div>' +
+    '<div class="field-row"><label>施設タイプ</label>' +
+      '<select id="sel-primary-type" data-field="primary_type">' + primaryTypeOpts + '</select>' +
+    '</div>' +
+    '<div class="field-row"><label>判定ソース</label>' +
+      '<input type="text" data-field="cls_source" value="' + escHtml(clsSource) + '" readonly>' +
+    '</div>' +
+
     '<div class="section-title">アクセス・情報</div>' +
     rowArea('notes',  '備考',     info.notes  || '') +
     row('access',     'アクセス', 'text', info.access || '') +
@@ -478,6 +501,14 @@ function showSpot(idx) {
     });
   }
   document.getElementById('sel-area-name').addEventListener('change', onAreaNameChange);
+
+  var ptSel = document.getElementById('sel-primary-type');
+  if (ptSel) {
+    ptSel.addEventListener('change', function() {
+      setField('cls_source', 'manual');
+      markDirty();
+    });
+  }
 }
 
 function row(field, label, type, val, readonly, step) {
@@ -566,6 +597,10 @@ function saveChanges() {
     info: {
       notes:  fv('notes'),
       access: fv('access')
+    },
+    classification: {
+      primary_type: fv('primary_type'),
+      source:       fv('cls_source')
     }
   };
 
@@ -738,6 +773,12 @@ def _save_spot(payload):
     for key in ("notes", "access"):
         if info.get(key) is not None:
             inf[key] = info[key]
+
+    cls_payload = payload.get("classification", {})
+    if cls_payload.get("primary_type"):
+        clf = spot.setdefault("classification", {})
+        clf["primary_type"] = cls_payload["primary_type"]
+        clf["source"] = cls_payload.get("source", "manual")
 
     with open(path, "w", encoding="utf-8") as f:
         json.dump(spot, f, ensure_ascii=False, indent=2)

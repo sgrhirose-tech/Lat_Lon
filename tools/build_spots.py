@@ -546,25 +546,33 @@ def process_record(rec: dict, idx: int, total: int, cfg: dict,
     city             = geo_ja["city"]
 
     # ── ④ 海方向計算（確定座標から）──────────────────────────
-    print("  海方向計算 (OSM)...", end=" ", flush=True)
-    try:
-        sea_bearing = calculate_sea_bearing(lat, lon)
-        print(f"→ {sea_bearing}°")
-    except Exception as e:
-        print(f"→ 失敗 ({e})")
+    if skip_google:
+        print("  海方向計算... スキップ（--skip-google）")
         sea_bearing = None
+    else:
+        print("  海方向計算 (OSM)...", end=" ", flush=True)
+        try:
+            sea_bearing = calculate_sea_bearing(lat, lon)
+            print(f"→ {sea_bearing}°")
+        except Exception as e:
+            print(f"→ 失敗 ({e})")
+            sea_bearing = None
 
     # ── ⑤ 底質・等深線取得（海しる）────────────────────────
-    print("  底質・等深線取得 (海しる)...", end=" ", flush=True)
-    try:
-        phys = fetch_physical_data(lat, lon, sea_bearing=sea_bearing)
-        if phys:
-            print(f"→ {phys.get('seabed_type')} / 20m等深線 {phys.get('nearest_20m_contour_distance_m')}m")
-        else:
-            print("→ 取得失敗")
-    except Exception as e:
-        print(f"→ エラー ({e})")
+    if skip_google:
+        print("  底質・等深線取得... スキップ（--skip-google）")
         phys = None
+    else:
+        print("  底質・等深線取得 (海しる)...", end=" ", flush=True)
+        try:
+            phys = fetch_physical_data(lat, lon, sea_bearing=sea_bearing)
+            if phys:
+                print(f"→ {phys.get('seabed_type')} / 20m等深線 {phys.get('nearest_20m_contour_distance_m')}m")
+            else:
+                print("→ 取得失敗")
+        except Exception as e:
+            print(f"→ エラー ({e})")
+            phys = None
 
     # ── ⑥ OSM 施設分類 ──────────────────────────────────────
     print("  施設分類 (Overpass)...", end=" ", flush=True)
